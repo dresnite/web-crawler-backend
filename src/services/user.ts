@@ -24,11 +24,19 @@ export async function getUserByCredentials(username: string, password: string): 
     return user;
 }
 
-export async function createUserToken(user: Document&UserDocument) {
+export async function createUserToken(user: UserDocument) {
     const token = jwt.sign({_id: user._id.toString()}, process.env.JWT_SECRET || "secret");
 
     user.tokens = user.tokens.concat({ token });
     await user.save();
 
     return token;
+}
+
+export async function removeUserToken(user: UserDocument, token: string) {
+    user.tokens = user.tokens.filter((t) => {
+        return t.token !== token;
+    });
+
+    await user.save();
 }

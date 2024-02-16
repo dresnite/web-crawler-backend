@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import AuthenticatedRequest from "../interfaces/AuthenticatedRequest";
-import { createUserToken, getUserByCredentials } from "../services/user";
+import { createUserToken, getUserByCredentials, removeUserToken } from "../services/user";
 import { IS_DEVELOPMENT_SERVER } from "../utils/config";
 
 export async function logIn(req: Request, res: Response) {
@@ -25,11 +25,7 @@ export async function logIn(req: Request, res: Response) {
 
 export async function logOut(req: AuthenticatedRequest, res: Response) {
     try {
-        req.user!.tokens = req.user!.tokens.filter((token) => {
-            return token.token !== req.token;
-        });
-
-        await req.user!.save();
+        await removeUserToken(req.user!, req.token!);
 
         res.send();
     } catch(e: any) {
