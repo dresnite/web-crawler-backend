@@ -9,5 +9,5 @@ if(isNaN(port)) {
 }
 
 app.listen(port, () => {
-    console.log(`Web Crawler running in the port ${port}`);
+    console.log(`Web Crawler's API is running in the port ${port}`);
 });

@@ -1,5 +1,6 @@
 import express from "express";
 import cookieParser from "cookie-parser";
+import "./utils/database";
 
 const app = express();
 
