@@ -1,12 +1,12 @@
 import jwt, { JwtPayload } from "jsonwebtoken";
 import User from "../models/user";
 import { JWT_SECRET } from "../utils/config";
-import { Request, Response, NextFunction } from "express";
-import PreprocessedAuthRequest from "../interfaces/PreprocessedAuthRequest";
+import { Response, NextFunction } from "express";
+import AuthenticatedRequest from "../interfaces/AuthenticatedRequest";
 
 const DEFAULT_AUTH_ERROR = "Please authenticate";
 
-export default async function auth(req: PreprocessedAuthRequest, res: Response, next: NextFunction) {
+export default async function auth(req: AuthenticatedRequest, res: Response, next: NextFunction) {
     try {
         const token = req.cookies.authToken;
 
