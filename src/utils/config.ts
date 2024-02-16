@@ -10,3 +10,4 @@ export const USERNAME_MAX_LENGTH: number = 32;
 export const PASSWORD_MIN_LENGTH: number = 6;
 export const JWT_SECRET: string = process.env.JWT_SECRET; 
 export const MONGODB_URI: string = process.env.MONGODB_URI;
+export const IS_DEVELOPMENT_SERVER: boolean = process.env.DEVELOPMENT === "true" || false;

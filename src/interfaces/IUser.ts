@@ -1,4 +1,4 @@
-export default interface IUser extends Document {
+export default interface IUser {
     username: string;
     password: string;
     tokens: { token: string }[];
