@@ -5,7 +5,7 @@
   "main": "src/index.ts",
   "scripts": {
     "start": "node -r ts-node/register --env-file=.env src/index.ts",
-    "test": "node --env-file=.env.development node_modules/jest/bin/jest.js -i --detectOpenHandles"
+    "test": "node --env-file=.env.dev node_modules/jest/bin/jest.js -i --detectOpenHandles"
   },
   "author": "dresnite",
   "license": "UNLICENSED",
