@@ -1,7 +1,7 @@
 import { Request } from "express";
-import IUser from "./IUser";
+import UserDocument from "./UserDocument";
 
 export default interface AuthenticatedRequest extends Request {
     token?: string,
-    user?: IUser
+    user?: UserDocument
 }

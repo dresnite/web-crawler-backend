@@ -2,9 +2,9 @@ import mongoose from "mongoose";
 import bcrypt from "bcrypt";
 import validator from "validator";
 import { USERNAME_MAX_LENGTH, PASSWORD_MIN_LENGTH } from "../utils/config";
-import IUser from "../interfaces/IUser";
+import UserDocument from "../interfaces/UserDocument";
 
-const userSchema = new mongoose.Schema<IUser>({
+const userSchema = new mongoose.Schema<UserDocument>({
     username: {
         type: String,
         required: true,

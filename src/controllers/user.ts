@@ -24,7 +24,19 @@ export async function logIn(req: Request, res: Response) {
 }
 
 export async function logOut(req: AuthenticatedRequest, res: Response) {
+    try {
+        req.user!.tokens = req.user!.tokens.filter((token) => {
+            return token.token !== req.token;
+        });
 
+        await req.user!.save();
+
+        res.send();
+    } catch(e: any) {
+        res.status(400).send({
+            error: "Failed to log out"
+        });
+    }
 }
 
 export async function register(req: Request, res: Response) {

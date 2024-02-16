@@ -1,8 +1,8 @@
-import IUser from "../../src/interfaces/IUser";
 import User from "../../src/models/user";
 import jwt from "jsonwebtoken";
 import { JWT_SECRET } from "../../src/utils/config";
 import mongoose from "mongoose";
+import IUser from "../../src/interfaces/IUser";
 
 export const dummyUserId = new mongoose.Types.ObjectId();
 
@@ -19,5 +19,5 @@ export const dummyUser: IUser = {
 export async function prepareDatabase() {
     await User.deleteMany();
 
-    await (new User(dummyUser)).save();
+    await (new User({_id: dummyUserId, ...dummyUser})).save();
 }

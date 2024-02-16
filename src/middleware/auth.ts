@@ -1,7 +1,7 @@
 import jwt, { JwtPayload } from "jsonwebtoken";
 import User from "../models/user";
 import { JWT_SECRET } from "../utils/config";
-import { Response, NextFunction } from "express";
+import { Response, NextFunction, Request } from "express";
 import AuthenticatedRequest from "../interfaces/AuthenticatedRequest";
 
 const DEFAULT_AUTH_ERROR = "Please authenticate";

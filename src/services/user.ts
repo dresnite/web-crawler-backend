@@ -1,10 +1,10 @@
-import IUser from "../interfaces/IUser";
+import UserDocument from "../interfaces/UserDocument";
 import User from "../models/user";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import { Document } from "mongoose";
 
-export async function getUserByCredentials(username: string, password: string): Promise<IUser & Document> {
+export async function getUserByCredentials(username: string, password: string): Promise<UserDocument & Document> {
     const user = await User.findOne({ username });
 
     if(!user) {
@@ -24,7 +24,7 @@ export async function getUserByCredentials(username: string, password: string): 
     return user;
 }
 
-export async function createUserToken(user: Document&IUser) {
+export async function createUserToken(user: Document&UserDocument) {
     const token = jwt.sign({_id: user._id.toString()}, process.env.JWT_SECRET || "secret");
 
     user.tokens = user.tokens.concat({ token });
