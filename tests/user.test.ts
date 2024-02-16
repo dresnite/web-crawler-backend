@@ -24,3 +24,32 @@ test("Should log out an existing user", async () => {
     const user = await User.findById(dummyUserId);
     expect(user?.tokens.length).toBe(0);
 });
+
+test("Should register a new user", async () => {
+    const numberOfUsersBeforeRegister = (await User.find()).length;
+
+    await request(app)
+        .post("/user/register")
+        .send({username: "somebody", password: "oncetoldme"})
+        .expect(201);
+
+    const numberOfUsersAfterRegister = (await User.find()).length;
+
+    expect(numberOfUsersAfterRegister).toBe(numberOfUsersBeforeRegister + 1);
+});
+test("Should fail to register a new user", async () => {
+    await request(app)
+        .post("/user/register")
+        .send({username: "somebody"})
+        .expect(400);
+
+        await request(app)
+        .post("/user/register")
+        .send({password: "oncetoldme"})
+        .expect(400);
+
+        await request(app)
+        .post("/user/register")
+        .send({username: dummyUser.username, password: "oncetoldme"})
+        .expect(400);
+});
