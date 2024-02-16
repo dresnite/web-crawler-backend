@@ -1,10 +1,5 @@
 import mongoose from "mongoose";
-
-const { MONGODB_URI } = process.env;
-
-if(typeof MONGODB_URI !== "string") {
-    throw new Error("You didn't define a valid MongoDB URI in the env MONGODB_URI");
-}
+import { MONGODB_URI } from "./config";
 
 console.log("Web Crawler is starting");
 console.log("Attempting to establish a connection with the database... (1/2)");
