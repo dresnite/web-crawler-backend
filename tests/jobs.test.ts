@@ -1,6 +1,6 @@
 import app from "../src/app";
 import request from "supertest";
-import { dummyCrawlingJobId, dummyUser, dummyUserId, prepareDatabase } from "./fixtures/database";
+import { dummyCrawlingJob, dummyCrawlingJobId, dummyUser, dummyUserId, prepareDatabase } from "./fixtures/database";
 import mongoose from "mongoose";
 import CrawlingJob from "../src/models/crawlingJob";
 
@@ -11,6 +11,14 @@ const jobByIdQuery = `#graphql
     query JobById($id: ID!){
         crawlingJob(id: $id) {
             id
+        }
+    }
+`;
+
+const jobsByOwnerQuery = `#graphql
+    query JobsByOwner($owner: ID!) {
+        crawlingJobsByOwner(owner: $owner) {
+            jobs
         }
     }
 `;
@@ -80,3 +88,19 @@ test("Should create a crawling job successfully", async () => {
 
     expect(numberOfJobsAfterRequest).toBe(numberOfJobsBeforeRequest + 1);
 });
+
+test("Should obtain crawling jobs created by an user", async () => {
+    const response = await request(app)
+        .post("/graphql")
+        .set("Cookie", `authToken=${dummyUser.tokens[0].token}`)
+        .send({
+            query: jobsByOwnerQuery,
+            variables: {
+                owner: dummyUserId
+            }
+        })
+        .expect(200);
+    
+    expect(response.body.jobs[0]?.seed).toBe(dummyCrawlingJob.seed);
+});
+
