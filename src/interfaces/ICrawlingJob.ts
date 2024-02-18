@@ -3,7 +3,7 @@ import Status from "../graphql/status";
 import IUser from "./IUser";
 
 export default interface ICrawlingJob {
-    owner: IUser | ObjectId,
+    owner: IUser | ObjectId | string,
     _id: string | undefined,
     parentJob: ICrawlingJob | ObjectId | null,
     seed: string,

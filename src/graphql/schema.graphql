@@ -3,10 +3,11 @@ type Query {
 }
 
 type Mutation {
-    createCrawlingJob(seed: String!, parent: ID): CrawlingJob
+    createCrawlingJob(owner: ID!, seed: String!, parent: ID): CrawlingJob
 }
 
 type CrawlingJob {
+    owner: ID!,
     id: ID!
     parentJob: CrawlingJob
     seed: String!

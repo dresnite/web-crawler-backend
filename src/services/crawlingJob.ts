@@ -37,6 +37,7 @@ export async function getChildrenCrawlingJobs(parentId: string): Promise<ICrawli
 export async function createCrawlingJob(job: ICrawlingJob): Promise<ICrawlingJob | null> {
     try {
         const newJob = new CrawlingJob({
+            owner: job.owner,
             parentJob: job.parentJob,
             seed: job.seed,
             status: Status.Working,
@@ -52,7 +53,7 @@ export async function createCrawlingJob(job: ICrawlingJob): Promise<ICrawlingJob
     }
 }
 
-export async function validateAuth(context: CustomContext) {
+export const validateAuth = (context: CustomContext) => {
     if(!context.user) {
         throw unauthorizedError("Not authorized to do this");
     }
