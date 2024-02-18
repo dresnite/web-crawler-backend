@@ -18,7 +18,7 @@ const jobByIdQuery = `#graphql
 const jobsByOwnerQuery = `#graphql
     query JobsByOwner($owner: ID!) {
         crawlingJobsByOwner(owner: $owner) {
-            jobs
+            seed
         }
     }
 `;
