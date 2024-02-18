@@ -1,5 +1,6 @@
 type Query {
     crawlingJob(id: ID!): CrawlingJob
+    crawlingJobsByOwner(owner: ID!): [CrawlingJob!]!
 }
 
 type Mutation {

@@ -100,7 +100,7 @@ test("Should obtain crawling jobs created by an user", async () => {
             }
         })
         .expect(200);
-    
-    expect(response.body.jobs[0]?.seed).toBe(dummyCrawlingJob.seed);
+        
+    expect(response.body.data.crawlingJobsByOwner[0]?.seed).toBe(dummyCrawlingJob.seed);
 });
 

@@ -18,6 +18,16 @@ export async function getCrawlingJobById(id: string): Promise<ICrawlingJob | nul
     }
 }
 
+export async function getCrawlingJobsByOwnerId(id: string): Promise<ICrawlingJob[]> {
+    try {
+        const crawlingJob = await CrawlingJob.find({ owner: id });
+
+        return crawlingJob;
+    } catch {
+        return [];
+    }
+}
+
 export async function getParentCrawlingJob(parentId: string|null): Promise<ICrawlingJob | null> {
     if(parentId) {
         await getCrawlingJobById(parentId);
