@@ -124,7 +124,7 @@ test("Should obtain original crawling jobs created by an user", async () => {
         })
         .expect(200);
 
-    expect(response.body.data.crawlingJobsByOwner[0]?.seed).toBe(dummyCrawlingJob.seed);
-    expect(response.body.data.crawlingJobsByOwner.length).toBe(1);
+    expect(response.body.data.originalCrawlingJobsByOwner[0]?.seed).toBe(dummyCrawlingJob.seed);
+    expect(response.body.data.originalCrawlingJobsByOwner.length).toBe(1);
 });
 

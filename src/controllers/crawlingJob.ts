@@ -1,5 +1,5 @@
 import { ObjectId } from "mongoose";
-import { createCrawlingJob, getChildrenCrawlingJobs, getCrawlingJobById, getCrawlingJobsByOwnerId, getParentCrawlingJob, validateAuth } from "../services/crawlingJob";
+import { createCrawlingJob, getChildrenCrawlingJobs, getCrawlingJobById, getCrawlingJobsByOwnerId, getOriginalCrawlingJobsByOwnerId, getParentCrawlingJob, validateAuth } from "../services/crawlingJob";
 import ICrawlingJob from "../interfaces/ICrawlingJob";
 import CustomContext from "../interfaces/CustomContext";
 
@@ -9,6 +9,10 @@ export async function getCrawlingJob(_root: any, { id }: { id: string }) {
 
 export async function getCrawlingJobsByOwner(_root: any, { owner }: { owner: string }) {
     return await getCrawlingJobsByOwnerId(owner);
+}
+
+export async function getOriginalCrawlingJobsByOwner(_root: any, { owner }: { owner: string }) {
+    return await getOriginalCrawlingJobsByOwnerId(owner);
 }
 
 export async function getParentJob(job: ICrawlingJob) {

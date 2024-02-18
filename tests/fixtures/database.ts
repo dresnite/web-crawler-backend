@@ -35,7 +35,7 @@ export const secondDummyCrawlingJobId = new mongoose.Types.ObjectId();
 
 export const secondDummyCrawlingJob: ICrawlingJob = {
     owner: dummyUserId.toString(),
-    _id: dummyCrawlingJobId.toString(),
+    _id: secondDummyCrawlingJobId.toString(),
     parentJob: dummyCrawlingJobId.toString(),
     seed: "https://elpais.com",
     status: Status.Working,

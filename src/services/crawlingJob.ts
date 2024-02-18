@@ -28,6 +28,22 @@ export async function getCrawlingJobsByOwnerId(id: string): Promise<ICrawlingJob
     }
 }
 
+export async function getOriginalCrawlingJobsByOwnerId(id: string): Promise<ICrawlingJob[]> {
+    try {
+        const crawlingJob = await CrawlingJob.find({
+            owner: id,
+            $or: [
+              { parentJob: { $exists: false } }, 
+              { parentJob: null }
+            ]
+        });
+
+        return crawlingJob;
+    } catch {
+        return [];
+    }
+}
+
 export async function getParentCrawlingJob(parentId: string|null): Promise<ICrawlingJob | null> {
     if(parentId) {
         await getCrawlingJobById(parentId);
