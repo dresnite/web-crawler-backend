@@ -3,6 +3,9 @@ import jwt from "jsonwebtoken";
 import { JWT_SECRET } from "../../src/utils/config";
 import mongoose from "mongoose";
 import IUser from "../../src/interfaces/IUser";
+import CrawlingJob from "../../src/models/crawlingJob";
+import ICrawlingJob from "../../src/interfaces/ICrawlingJob";
+import Status from "../../src/graphql/status";
 
 export const dummyUserId = new mongoose.Types.ObjectId();
 
@@ -16,8 +19,35 @@ export const dummyUser: IUser = {
     ]
 };
 
+export const dummyCrawlingJobId = new mongoose.Types.ObjectId();
+
+export const dummyCrawlingJob: ICrawlingJob = {
+    owner: dummyUserId.toString(),
+    _id: dummyCrawlingJobId.toString(),
+    parentJob: null,
+    seed: "https://elpais.com",
+    status: Status.Working,
+    linksFound: [],
+    childrenJobs: []
+};
+
+export const secondDummyCrawlingJobId = new mongoose.Types.ObjectId();
+
+export const secondDummyCrawlingJob: ICrawlingJob = {
+    owner: dummyUserId.toString(),
+    _id: secondDummyCrawlingJobId.toString(),
+    parentJob: dummyCrawlingJobId.toString(),
+    seed: "https://elpais.com",
+    status: Status.Working,
+    linksFound: [],
+    childrenJobs: []
+};
+
 export async function prepareDatabase() {
     await User.deleteMany();
+    await CrawlingJob.deleteMany();
 
     await (new User({_id: dummyUserId, ...dummyUser})).save();
+    await (new CrawlingJob(dummyCrawlingJob)).save();
+    await (new CrawlingJob(secondDummyCrawlingJob)).save();
 }
