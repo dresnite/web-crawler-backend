@@ -31,10 +31,23 @@ export const dummyCrawlingJob: ICrawlingJob = {
     childrenJobs: []
 };
 
+export const secondDummyCrawlingJobId = new mongoose.Types.ObjectId();
+
+export const secondDummyCrawlingJob: ICrawlingJob = {
+    owner: dummyUserId.toString(),
+    _id: dummyCrawlingJobId.toString(),
+    parentJob: dummyCrawlingJobId.toString(),
+    seed: "https://elpais.com",
+    status: Status.Working,
+    linksFound: [],
+    childrenJobs: []
+};
+
 export async function prepareDatabase() {
     await User.deleteMany();
     await CrawlingJob.deleteMany();
 
     await (new User({_id: dummyUserId, ...dummyUser})).save();
     await (new CrawlingJob(dummyCrawlingJob)).save();
+    await (new CrawlingJob(secondDummyCrawlingJob)).save();
 }

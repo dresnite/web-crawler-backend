@@ -23,6 +23,14 @@ const jobsByOwnerQuery = `#graphql
     }
 `;
 
+const originalJobsByOwnerQuery = `#graphql
+    query JobsByOwner($owner: ID!) {
+        originalCrawlingJobsByOwner(owner: $owner) {
+            seed
+        }
+    }
+`;
+
 const createJobQuery = `#graphql
     mutation CreateCrawlingJob($owner: ID!, $seed: String!, $parent: ID) {
         createCrawlingJob(owner: $owner, seed: $seed, parent: $parent) {
@@ -100,7 +108,23 @@ test("Should obtain crawling jobs created by an user", async () => {
             }
         })
         .expect(200);
-        
+
     expect(response.body.data.crawlingJobsByOwner[0]?.seed).toBe(dummyCrawlingJob.seed);
+});
+
+test("Should obtain original crawling jobs created by an user", async () => {
+    const response = await request(app)
+        .post("/graphql")
+        .set("Cookie", `authToken=${dummyUser.tokens[0].token}`)
+        .send({
+            query: originalJobsByOwnerQuery,
+            variables: {
+                owner: dummyUserId
+            }
+        })
+        .expect(200);
+
+    expect(response.body.data.crawlingJobsByOwner[0]?.seed).toBe(dummyCrawlingJob.seed);
+    expect(response.body.data.crawlingJobsByOwner.length).toBe(1);
 });
 
