@@ -1,6 +1,17 @@
+import { createJob, getChildrenJobs, getCrawlingJob, getParentJob } from "../controllers/crawlingJob";
+
 const resolvers = {
     Query: {
-        greeting: () => "Hello w"
+        crawlingJob: getCrawlingJob
+    },
+
+    CrawlingJob: {
+        parentJob: getParentJob,
+        childrenJobs: getChildrenJobs
+    },
+
+    Mutation: {
+        createCrawlingJob: createJob
     }
 };
 

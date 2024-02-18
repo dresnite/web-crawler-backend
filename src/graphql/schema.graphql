@@ -1,0 +1,22 @@
+type Query {
+    crawlingJob(id: ID!): CrawlingJob
+}
+
+type Mutation {
+    createCrawlingJob(seed: String!, parent: ID): CrawlingJob
+}
+
+type CrawlingJob {
+    id: ID!
+    parentJob: CrawlingJob
+    seed: String!
+    status: CrawlingJobStatus!
+    linksFound: [String!]!
+    childrenJobs: [CrawlingJob!]!
+}
+
+enum CrawlingJobStatus {
+    STOPPED
+    WORKING
+    FINISHED
+}
