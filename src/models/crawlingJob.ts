@@ -2,6 +2,11 @@ import mongoose from "mongoose";
 import ICrawlingJob from "../interfaces/ICrawlingJob";
 
 const crawlingJobSchema = new mongoose.Schema<ICrawlingJob>({
+    owner: {
+        type: mongoose.Types.ObjectId,
+        ref: "User",
+        required: true
+    },
     parentJob: {
         type: mongoose.Types.ObjectId,
         ref: "CrawlingJob"

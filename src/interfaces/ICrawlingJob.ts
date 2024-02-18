@@ -1,7 +1,9 @@
 import { ObjectId } from "mongoose";
 import Status from "../graphql/status";
+import IUser from "./IUser";
 
 export default interface ICrawlingJob {
+    owner: IUser | ObjectId,
     _id: string | undefined,
     parentJob: ICrawlingJob | ObjectId | null,
     seed: string,
