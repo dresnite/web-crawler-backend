@@ -80,6 +80,29 @@ export async function createCrawlingJob(job: ICrawlingJob): Promise<ICrawlingJob
     }
 }
 
+export async function updateCrawlingJobStatus(jobId: string, status: Status): Promise<ICrawlingJob | null> {
+    const found = await CrawlingJob.findById(jobId);
+
+    if(!found) return null;
+    
+    found.status = status;
+
+    return found;
+}
+
+export async function finishCrawlingJob(jobId: string, links: string[]): Promise<ICrawlingJob | null> {
+    const found = await CrawlingJob.findById(jobId);
+
+    if(!found) return null;
+    
+    found.status = Status.Finished;
+    found.linksFound = links;
+
+    await found.save();
+
+    return found;
+}
+
 export const validateAuth = (context: CustomContext) => {
     if(!context.user) {
         throw unauthorizedError("Not authorized to do this");

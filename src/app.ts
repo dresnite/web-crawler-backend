@@ -14,4 +14,8 @@ app.use(graphqlRouter);
 
 worker.run();
 
+export function dispose() {
+    worker.close();
+}
+
 export default app;
