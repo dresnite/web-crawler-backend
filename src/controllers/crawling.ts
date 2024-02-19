@@ -5,6 +5,7 @@ import { createCrawlingJob, finishCrawlingJob, updateCrawlingJobStatus } from ".
 import CrawlingJob from "../models/crawlingJob";
 import axios from "axios";
 import { crawlContent } from "../services/crawling";
+import { queue } from "../bullmq/queue";
 
 export async function processJob(job: Job): Promise<string> {
     const crawlingJob = job.data as ICrawlingJob;
@@ -33,6 +34,8 @@ export async function processJob(job: Job): Promise<string> {
             });
 
             createCrawlingJob(newJob)
+
+            queue.add(newJob.seed, newJob);
         });
 
 
@@ -46,12 +49,14 @@ export async function processJob(job: Job): Promise<string> {
 }
 
 export async function completeCrawlingJob(crawlingJob: ICrawlingJob, status: Status, links: string[]) {
-    validateCrawlingJobId(crawlingJob);
+    try {
+        validateCrawlingJobId(crawlingJob);
 
-    crawlingJob.linksFound = links;
-    crawlingJob.status = status;
+        crawlingJob.linksFound = links;
+        crawlingJob.status = status;
 
-    finishCrawlingJob(crawlingJob._id!, status, links);
+        finishCrawlingJob(crawlingJob._id!, status, links);
+    } catch {}
 }
 
 function validateCrawlingJobId(job: ICrawlingJob) {

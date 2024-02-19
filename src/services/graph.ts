@@ -91,16 +91,20 @@ export async function updateCrawlingJobStatus(jobId: string, status: Status): Pr
 }
 
 export async function finishCrawlingJob(jobId: string, status: Status, links: string[]): Promise<ICrawlingJob | null> {
-    const found = await CrawlingJob.findById(jobId);
+    try {
+        const found = await CrawlingJob.findById(jobId);
 
-    if(!found) return null;
-    
-    found.status = status;
-    found.linksFound = links;
+        if(!found) return null;
+        
+        found.status = status;
+        found.linksFound = links;
 
-    await found.save();
+        await found.save();
 
-    return found;
+        return found;
+    } catch {
+        return null;
+    }
 }
 
 export const validateAuth = (context: CustomContext) => {
