@@ -43,6 +43,14 @@ const createJobQuery = `#graphql
     }
 `;
 
+const crawlingJobsByParentIdQuery = `#graphql
+    query JobsByParentId($parentId: ID!) {
+        crawlingJobsByParentId(parentId: $parentId) {
+            seed
+        }
+    }
+`;
+
 test("Should be unauthorized to get a crawling job", async () => {
     await request(app)
         .post("/graphql")
@@ -130,5 +138,20 @@ test("Should obtain original crawling jobs created by an user", async () => {
 
     expect(response.body.data.originalCrawlingJobsByOwner[0]?.seed).toBe(dummyCrawlingJob.seed);
     expect(response.body.data.originalCrawlingJobsByOwner.length).toBe(1);
+});
+
+test("Should obtain crawling jobs by their parent id", async () => {
+    const response = await request(app)
+        .post("/graphql")
+        .set("Cookie", `authToken=${dummyUser.tokens[0].token}`)
+        .send({
+            query: crawlingJobsByParentIdQuery,
+            variables: {
+                parentId: dummyCrawlingJobId
+            }
+        })
+        .expect(200);
+
+    expect(response.body.data.crawlingJobsByParentId.length).toBe(1); 
 });
 

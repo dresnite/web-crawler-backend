@@ -16,6 +16,10 @@ export async function getOriginalCrawlingJobsByOwner(_root: any, { owner }: { o
     return await getOriginalCrawlingJobsByOwnerId(owner);
 }
 
+export async function getCrawlingJobsByParentId(_root: any, {parentId}: { parentId: string }) {
+    return await getChildrenCrawlingJobs(parentId);
+}
+
 export async function getParentJob(job: ICrawlingJob) {
     if(job.parentJob) {
         return await getParentCrawlingJob(
