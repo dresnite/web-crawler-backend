@@ -1,13 +1,11 @@
 import mongoose from "mongoose";
 import { MONGODB_URI } from "./config";
-
-console.log("Web Crawler is starting");
-console.log("Attempting to establish a connection with the database... (1/2)");
+import CrawlingWorker from "../bullmq/worker";
 
 mongoose
     .connect(MONGODB_URI)
     .then(async () => {
-        console.log("Successfully established a connection with the database (2/2)");
+        CrawlingWorker.getInstance().start();
     })
     .catch(async (error) => {
         console.error("Connection error:", error);

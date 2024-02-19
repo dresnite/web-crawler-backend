@@ -5,13 +5,12 @@
   "main": "src/index.ts",
   "scripts": {
     "start": "node -r ts-node/register --env-file=.env src/index.ts",
-    "test": "node --env-file=.env.dev node_modules/jest/bin/jest.js --runInBand --detectOpenHandles"
+    "test": "node --env-file=.env.dev node_modules/jest/bin/jest.js --runInBand --forceExit --detectOpenHandles"
   },
   "author": "dresnite",
   "license": "UNLICENSED",
   "dependencies": {
     "@apollo/server": "^4.10.0",
-    "normalize-url": "npm:@esm2cjs/normalize-url",
     "axios": "^1.6.7",
     "bcrypt": "^5.1.1",
     "bullmq": "^5.2.1",
@@ -19,8 +18,10 @@
     "cookie-parser": "^1.4.6",
     "express": "^4.18.2",
     "graphql": "^16.8.1",
+    "ioredis": "^5.3.2",
     "jsonwebtoken": "^9.0.2",
     "mongoose": "^8.1.2",
+    "normalize-url": "npm:@esm2cjs/normalize-url",
     "validator": "^13.11.0"
   },
   "devDependencies": {
