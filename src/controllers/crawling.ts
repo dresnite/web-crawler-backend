@@ -9,13 +9,9 @@ import { crawlContent } from "../services/crawling";
 export async function processJob(job: Job): Promise<string> {
     const crawlingJob = job.data as ICrawlingJob;
 
+    console.log(crawlingJob.status);
+
     if(crawlingJob.status === Status.Finished) {
-        return crawlingJob.seed;
-    }
-
-    const similars = await CrawlingJob.find({ owner: crawlingJob.owner, seed: crawlingJob.seed, _id: { $ne: crawlingJob._id } });
-
-    if(similars.length > 0) {
         return crawlingJob.seed;
     }
 
@@ -24,8 +20,8 @@ export async function processJob(job: Job): Promise<string> {
     }
 
     const response = await axios.get(crawlingJob.seed);
-    
-    const { links, routes } = crawlContent(response.data, crawlingJob.seed);
+
+    const { links, routes } = crawlContent(crawlingJob.seed, response.data);
 
     routes.forEach((link) => {
         const newJob = new CrawlingJob({

@@ -18,8 +18,8 @@ class CrawlingWorker {
       console.log(`✅ Awesome, just finished crawling ${seed}`);
     });
 
-    this.worker.on("failed", () => {
-      console.log("⛔️ A crawling worker failed!");
+    this.worker.on("failed", (error) => {
+      console.log("⛔️ A crawling worker failed!", error);
     });
 
     this.worker.on("error", (error) => {

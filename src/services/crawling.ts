@@ -9,23 +9,25 @@ export function crawlContent(seed: string, content: string) {
     const routes: Set<string> = new Set();
 
     $('a').each((_, element) => {
-        const link = $(element).attr('href');
+        try {
+            const link = $(element).attr('href');
         
-        if(!link) {
-            return;
-        }
+            if(!link) {
+                return;
+            }
 
-        if(isURL(link)) {
-            links.add(normalizeUrl(link));
-        }
+            if(isURL(link)) {
+                links.add(normalizeUrl(link));
+            }
 
-        const startsWithSlash = link.startsWith("/");
-        if(startsWithSlash || areTwoUrlsFromTheSameOrigin(seed, link)) {
-            routes.add((startsWithSlash) ? seed + link : normalizeUrl(link))
-        }
+            const startsWithSlash = link.startsWith("/");
+            if(startsWithSlash || areTwoUrlsFromTheSameOrigin(seed, link)) {
+                routes.add((startsWithSlash) ? seed + link : normalizeUrl(link))
+            }
+        } catch {}
     });
 
-    return { links, routes };
+    return { links: Array.from(links) , routes: Array.from(routes) };
 }
 
 export function areTwoUrlsFromTheSameOrigin(seed: string, link: string) {
