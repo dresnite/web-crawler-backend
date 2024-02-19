@@ -1,5 +1,5 @@
 import { ObjectId } from "mongoose";
-import { createCrawlingJob, getChildrenCrawlingJobs, getCrawlingJobById, getCrawlingJobsByOwnerId, getOriginalCrawlingJobsByOwnerId, getParentCrawlingJob, validateAuth } from "../services/crawlingJob";
+import { createCrawlingJob, getChildrenCrawlingJobs, getCrawlingJobById, getCrawlingJobsByOwnerId, getOriginalCrawlingJobsByOwnerId, getParentCrawlingJob, validateAuth } from "../services/graph";
 import ICrawlingJob from "../interfaces/ICrawlingJob";
 import CustomContext from "../interfaces/CustomContext";
 

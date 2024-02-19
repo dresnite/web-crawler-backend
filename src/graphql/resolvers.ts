@@ -1,4 +1,4 @@
-import { createJob, getChildrenJobs, getCrawlingJob, getCrawlingJobsByOwner, getOriginalCrawlingJobsByOwner, getParentJob } from "../controllers/crawlingJob";
+import { createJob, getChildrenJobs, getCrawlingJob, getCrawlingJobsByOwner, getOriginalCrawlingJobsByOwner, getParentJob } from "../controllers/graph";
 
 const resolvers = {
     Query: {
