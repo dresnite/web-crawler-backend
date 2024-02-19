@@ -3,9 +3,13 @@ import app from "../src/app";
 import { dummyUser, dummyUserId, prepareDatabase } from "./fixtures/database";
 import mongoose from "mongoose";
 import User from "../src/models/user";
+import { shutdownRedis } from "../src/utils/redis";
+import CrawlingWorker from "../src/bullmq/worker";
 
 beforeEach(prepareDatabase);
 afterAll(mongoose.disconnect);
+afterAll(CrawlingWorker.stop);
+afterAll(shutdownRedis);
 
 test("Should log in existing user", async () => {
     await request(app)

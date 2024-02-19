@@ -3,9 +3,13 @@ import request from "supertest";
 import { dummyCrawlingJob, dummyCrawlingJobId, dummyUser, dummyUserId, prepareDatabase } from "./fixtures/database";
 import mongoose from "mongoose";
 import CrawlingJob from "../src/models/crawlingJob";
+import { shutdownRedis } from "../src/utils/redis";
+import CrawlingWorker from "../src/bullmq/worker";
 
 beforeEach(prepareDatabase);
 afterAll(mongoose.disconnect);
+afterAll(CrawlingWorker.stop);
+afterAll(shutdownRedis);
 
 const jobByIdQuery = `#graphql
     query JobById($id: ID!){
