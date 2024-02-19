@@ -2,6 +2,7 @@ import { ObjectId } from "mongoose";
 import { createCrawlingJob, getChildrenCrawlingJobs, getCrawlingJobById, getCrawlingJobsByOwnerId, getOriginalCrawlingJobsByOwnerId, getParentCrawlingJob, validateAuth } from "../services/graph";
 import ICrawlingJob from "../interfaces/ICrawlingJob";
 import CustomContext from "../interfaces/CustomContext";
+import { queue } from "../bullmq/queue";
 
 export async function getCrawlingJob(_root: any, { id }: { id: string }) {
     return await getCrawlingJobById(id);
@@ -31,5 +32,12 @@ export async function getChildrenJobs(job: ICrawlingJob) {
 
 export async function createJob(_root: any, job: ICrawlingJob, context: CustomContext) {
     validateAuth(context);
-    return await createCrawlingJob(job);
+
+    const result = await createCrawlingJob(job);
+
+    if(result) {
+        queue.add(result.seed, result);
+    }
+
+    return result;
 }
