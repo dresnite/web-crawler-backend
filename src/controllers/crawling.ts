@@ -9,37 +9,40 @@ import { crawlContent } from "../services/crawling";
 export async function processJob(job: Job): Promise<string> {
     const crawlingJob = job.data as ICrawlingJob;
 
-    console.log(crawlingJob.status);
+    try {
+        if(crawlingJob.status === Status.Finished) {
+            return crawlingJob.seed;
+        }
 
-    if(crawlingJob.status === Status.Finished) {
-        return crawlingJob.seed;
-    }
+        if(crawlingJob.status === Status.Stopped) {
+            await updateCrawlingJobStatus(crawlingJob._id!, Status.Working);
+        }
 
-    if(crawlingJob.status === Status.Stopped) {
-        await updateCrawlingJobStatus(crawlingJob._id!, Status.Working);
-    }
+        const response = await axios.get(crawlingJob.seed);
 
-    const response = await axios.get(crawlingJob.seed);
+        const { links, routes } = crawlContent(crawlingJob.seed, response!.data);
 
-    const { links, routes } = crawlContent(crawlingJob.seed, response.data);
+        routes.forEach((link) => {
+            const newJob = new CrawlingJob({
+                owner: crawlingJob.owner,
+                parentJob: crawlingJob.parentJob ?? crawlingJob._id,
+                seed: link,
+                status: Status.Working,
+                linksFound: [],
+                childrenJobs: []
+            });
 
-    routes.forEach((link) => {
-        const newJob = new CrawlingJob({
-            owner: crawlingJob.owner,
-            parentJob: crawlingJob.parentJob ?? crawlingJob._id,
-            seed: link,
-            status: Status.Working,
-            linksFound: [],
-            childrenJobs: []
+            createCrawlingJob(newJob)
         });
 
-        createCrawlingJob(newJob)
-    });
 
+        await completeCrawlingJob(crawlingJob, Status.Finished, Array.from(links));
 
-    await completeCrawlingJob(crawlingJob, Status.Finished, Array.from(links));
-
-    return crawlingJob.seed;
+        return crawlingJob.seed;
+    } catch {
+        await completeCrawlingJob(crawlingJob, Status.Stopped, []);
+        return crawlingJob.seed;
+    }
 }
 
 export async function completeCrawlingJob(crawlingJob: ICrawlingJob, status: Status, links: string[]) {
@@ -48,7 +51,7 @@ export async function completeCrawlingJob(crawlingJob: ICrawlingJob, status: Sta
     crawlingJob.linksFound = links;
     crawlingJob.status = status;
 
-    finishCrawlingJob(crawlingJob._id!, links);
+    finishCrawlingJob(crawlingJob._id!, status, links);
 }
 
 function validateCrawlingJobId(job: ICrawlingJob) {

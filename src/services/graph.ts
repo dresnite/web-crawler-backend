@@ -90,12 +90,12 @@ export async function updateCrawlingJobStatus(jobId: string, status: Status): Pr
     return found;
 }
 
-export async function finishCrawlingJob(jobId: string, links: string[]): Promise<ICrawlingJob | null> {
+export async function finishCrawlingJob(jobId: string, status: Status, links: string[]): Promise<ICrawlingJob | null> {
     const found = await CrawlingJob.findById(jobId);
 
     if(!found) return null;
     
-    found.status = Status.Finished;
+    found.status = status;
     found.linksFound = links;
 
     await found.save();
