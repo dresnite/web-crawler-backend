@@ -46,6 +46,10 @@ If you prefer using Docker, you can easily set up Redis and MongoDB containers t
 
 I intend to turn this project into a containerized applications, but I haven't had enough time to get that done yet.
 
+## Testing
+
+This project uses Jest for unit testing, you can run the tests with `npm test`.
+
 ## Technologies Used
 
 The project utilizes the following technologies:
