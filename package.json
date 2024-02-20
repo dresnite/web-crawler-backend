@@ -5,6 +5,7 @@
   "main": "src/index.ts",
   "scripts": {
     "start": "node -r ts-node/register --env-file=.env src/index.ts",
+    "dev": "node -r ts-node/register --env-file=.env.dev src/index.ts",
     "test": "node --env-file=.env.dev node_modules/jest/bin/jest.js --runInBand --forceExit --detectOpenHandles"
   },
   "author": "dresnite",
