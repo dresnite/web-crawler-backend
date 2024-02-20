@@ -2,8 +2,8 @@ import Status from "../graphql/status";
 import CustomContext from "../interfaces/CustomContext";
 import ICrawlingJob from "../interfaces/ICrawlingJob";
 import CrawlingJob from "../models/crawlingJob";
-import normalizeUrl from "normalize-url";
 import unauthorizedError from "../utils/unauthorizedError";
+import { normalize } from "../utils/normalize";
 
 export async function getCrawlingJobById(id: string): Promise<ICrawlingJob | null> {
     try {
@@ -66,7 +66,7 @@ export async function createCrawlingJob(job: ICrawlingJob): Promise<ICrawlingJob
         const newJob = new CrawlingJob({
             owner: job.owner,
             parentJob: job.parentJob,
-            seed: normalizeUrl(job.seed),
+            seed: normalize(job.seed),
             status: Status.Working,
             linksFound: job.linksFound,
             childrenJobs: []
@@ -102,7 +102,8 @@ export async function finishCrawlingJob(jobId: string, status: Status, links: st
         await found.save();
 
         return found;
-    } catch {
+    } catch(e) {
+        console.log("Error while finishing crawling job", e);
         return null;
     }
 }

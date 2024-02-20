@@ -20,6 +20,6 @@ test("Should crawl the links correctly", () => {
 
     const { links, routes } = crawlContent(seed, content);
 
-    expect(links.length).toBe(5);
-    expect(routes.length).toBe(3);
+    expect(Array.from(links).length).toBe(5);
+    expect(Array.from(routes).length).toBe(3);
 });

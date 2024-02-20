@@ -1,6 +1,6 @@
 import { load } from "cheerio";
-import normalizeUrl from "normalize-url";
 import { isURL } from "validator";
+import { normalize } from "../utils/normalize";
 
 export function crawlContent(seed: string, content: string) {
     const $ = load(content);
@@ -17,17 +17,17 @@ export function crawlContent(seed: string, content: string) {
             }
 
             if(isURL(link)) {
-                links.add(normalizeUrl(link));
+                links.add(normalize(link));
             }
 
             const startsWithSlash = link.startsWith("/");
-            if(startsWithSlash || areTwoUrlsFromTheSameOrigin(seed, link)) {
-                routes.add((startsWithSlash) ? seed + link : normalizeUrl(link))
+            if(startsWithSlash || (link.startsWith("http") && areTwoUrlsFromTheSameOrigin(seed, link))) {
+                routes.add((startsWithSlash) ? seed + link : normalize(link))
             }
         } catch {}
     });
 
-    return { links: Array.from(links) , routes: Array.from(routes) };
+    return { links , routes };
 }
 
 export function areTwoUrlsFromTheSameOrigin(seed: string, link: string) {
